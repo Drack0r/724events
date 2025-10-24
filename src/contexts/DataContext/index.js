@@ -30,13 +30,22 @@ export const DataProvider = ({ children }) => {
     if (data) return;
     getData();
   });
-  
+
+  const last = data?.events
+    ? data.events.reduce((latest, event) => {
+        const eventDate = new Date(event.date);
+        const latestDate = new Date(latest.date);
+        return eventDate > latestDate ? event : latest;
+      })
+    : null;
+
   return (
     <DataContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         data,
         error,
+        last,
       }}
     >
       {children}
@@ -46,7 +55,7 @@ export const DataProvider = ({ children }) => {
 
 DataProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};
 
 export const useData = () => useContext(DataContext);
 
