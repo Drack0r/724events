@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
 
@@ -7,22 +7,49 @@ import "./style.scss";
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
+  const timeoutRef = useRef(null);
+
   const byDateDesc = data?.focus?.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
 
   const nextCard = () => {
     if (byDateDesc && byDateDesc.length > 0) {
-      setTimeout(
-        () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
-        5000
+      setIndex((prevIndex) =>
+        prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0
       );
     }
   };
 
+  const resetTimer = () => {
+    // Nettoyer le timer existant
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Démarrer un nouveau timer
+    if (byDateDesc && byDateDesc.length > 0) {
+      timeoutRef.current = setTimeout(() => {
+        nextCard();
+      }, 5000);
+    }
+  };
+
   useEffect(() => {
-    nextCard();
-  });
+    resetTimer();
+
+    // Nettoyer le timer au démontage du composant
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [index, byDateDesc]);
+
+  // Fonction pour gérer le clic sur un bullet point
+  const handleBulletClick = (bulletIndex) => {
+    setIndex(bulletIndex);
+  };
 
   // Retourner null ou un loader si les données ne sont pas encore chargées
   if (!byDateDesc || byDateDesc.length === 0) {
@@ -56,7 +83,7 @@ const Slider = () => {
               type="radio"
               name="radio-button"
               checked={index === radioIdx}
-              readOnly
+              onChange={() => handleBulletClick(radioIdx)}
             />
           ))}
         </div>
