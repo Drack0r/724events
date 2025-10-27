@@ -10,6 +10,17 @@ describe("When Menu is created", () => {
     await screen.findByText("Contact");
   });
 
+  // Test unitaire ajouté
+  describe("a click is triggered on link", () => {
+    it("navigation link has correct href attribute", async () => {
+      render(<Menu />);
+
+      const link = await screen.findByText("Nos services");
+
+      expect(link.closest("a")).toHaveAttribute("href", "#nos-services");
+    });
+  });
+
   describe("and a click is triggered on contact button", () => {
     it("document location  href change", async () => {
       render(<Menu />);
