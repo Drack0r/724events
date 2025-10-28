@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Menu from "./index";
 
-describe("When Menu is created", () => {
+describe("When Menu is mounted", () => {
   it("a list of mandatories links and the logo are displayed", async () => {
     render(<Menu />);
     await screen.findByText("Nos services");
@@ -11,7 +11,7 @@ describe("When Menu is created", () => {
   });
 
   // Test unitaire ajouté
-  describe("a click is triggered on link", () => {
+  describe("a click is triggered on a navigation link", () => {
     it("navigation link has correct href attribute", async () => {
       render(<Menu />);
 
