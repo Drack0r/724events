@@ -22,12 +22,10 @@ const Slider = () => {
   };
 
   const resetTimer = () => {
-    // Nettoyer le timer existant
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // Démarrer un nouveau timer
     if (byDateDesc && byDateDesc.length > 0) {
       timeoutRef.current = setTimeout(() => {
         nextCard();
@@ -38,7 +36,6 @@ const Slider = () => {
   useEffect(() => {
     resetTimer();
 
-    // Nettoyer le timer au démontage du composant
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -46,12 +43,10 @@ const Slider = () => {
     };
   }, [index, byDateDesc]);
 
-  // Fonction pour gérer le clic sur un bullet point
   const handleBulletClick = (bulletIndex) => {
     setIndex(bulletIndex);
   };
 
-  // Retourner null ou un loader si les données ne sont pas encore chargées
   if (!byDateDesc || byDateDesc.length === 0) {
     return <div className="SlideCardList">Loading...</div>;
   }

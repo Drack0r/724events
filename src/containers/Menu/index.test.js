@@ -10,7 +10,6 @@ describe("When Menu is mounted", () => {
     await screen.findByText("Contact");
   });
 
-  // Test unitaire ajouté
   describe("a click is triggered on a navigation link", () => {
     it("navigation link has correct href attribute", async () => {
       render(<Menu />);

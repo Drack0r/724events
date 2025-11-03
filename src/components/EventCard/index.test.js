@@ -50,7 +50,6 @@ describe("When a event card is created", () => {
     });
   });
 });
-// Test unitaire ajouté
 describe("with default props", () => {
   it("uses default values when optional props are not provided", () => {
     render(
